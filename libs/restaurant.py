@@ -1,3 +1,5 @@
+from .reservation import Reservation
+
 class Restaurant:
     """Classe représentant un restaurant et ses fonctionnalités de gestion.
 
@@ -42,17 +44,61 @@ class Restaurant:
         """
         return False  # À implémenter
 
-    def ajouter_reservation(self, reservation: dict) -> bool:
-        """Ajoute une nouvelle réservation pour le restaurant.
+    def ajouter_reservation(reservations):
+        """Ajout d'une réservation."""
 
-        Args:
-            reservation: Dictionnaire contenant les détails de la réservation.
-                Exemple: {"date": "2025-12-25", "heure": "20:00", "table": 2, "nom_client": "Dupont"}.
+        # Récolte des informations.
+        identite_client = input("Entrer le NOM et le Prénom du client :\nadd> ")
+        print(identite_client)
 
-        Returns:
-            bool: True si la réservation a été ajoutée avec succès, False en cas d'échec.
-        """
-        return False  # À implémenter
+        identite_employe = input("Entrer le nom de l'employé :\nadd> ")
+        print(identite_employe)
+
+        num_table = input("Entrer le numéro de la table :\nadd> ")
+        print(num_table)
+
+        nombre_personnes = input("Entrer le nombre de convives :\nadd> ")
+        print(nombre_personnes)
+
+        horodatage = input("Entrer la date et l'heure :\nadd> ")
+        print(horodatage)
+
+        type_reservation = input("S'il s'agit d'une occasion particulière, merci de le préciser :\nadd> ")
+        print(type_reservation)
+
+        contraintes_alimentaires = []
+        while True:
+            allergie = input("Spécifier les aliments auxquels le client est allergique (ou appuyer sur Entrée pour terminer) :\nadd-allergic> ").strip()
+
+            # Si l'utilisateur appuie sur Entrée sans rien écrire, on sort de la boucle
+            if not allergie:
+                break
+
+            # Ajoute l'allergie à la liste
+            contraintes_alimentaires.append(allergie)
+            print(allergie)
+        print(contraintes_alimentaires)
+        
+        nombre_enfants = input("Entrer le nombre d'enfants :\nadd> ")
+        print(nombre_enfants)
+
+        commentaire = input("Entrer un éventuel commentaire :\nadd> ") 
+        print(commentaire)
+
+        # Création d'une instance
+        reservation = Reservation(
+            identite_client=identite_client,
+            identite_employe=identite_employe,
+            num_table=num_table,
+            nombre_personnes=nombre_personnes,
+            horodatage=horodatage,
+            type_reservation=type_reservation,
+            contraintes_alimentaires=contraintes_alimentaires,
+            nombre_enfants=nombre_enfants,
+            commentaire=commentaire,
+        )
+
+        reservations.append(reservation)
 
     def retirer_reservation(self, identifiant_reservation: str) -> bool:
         """Retire une réservation existante du système.
@@ -65,10 +111,11 @@ class Restaurant:
         """
         return False  # À implémenter
 
-    def lister_reservations(self):
+    def lister_reservations(reservations):
         """Liste l'ensemble des réservations enregistrées par le système.
 
         Returns:
             list: Une liste contenant toutes les réservations.
         """
-        return False
+        for index, reservation in enumerate(reservations, start=1):
+            print(f"{index}. {reservation.identite_client}")
