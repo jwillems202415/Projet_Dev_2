@@ -14,7 +14,7 @@ class Client:
         self,
         identite: str,
         preference_table: int,
-        contact: int,
+        contact: str,
     ) -> None:
         """Initialise une instance de Client.
 
@@ -23,20 +23,64 @@ class Client:
             preference_table: Le numéro de la table préférée du client.
             contact: Le numéro de téléphone du client.
         """
-        self.identite = identite
-        self.preference_table = preference_table
-        self.contact = contact
+        self.__identite = identite
+        self.__preference_table = preference_table
+        self.__contact = contact
 
-    def reserver(self, restaurant: 'Restaurant', date: str, heure: str, nombre_personnes: int) -> bool:
-        """Effectue une réservation pour le client dans un restaurant donné.
+    
+    @property
+    def identite(self) -> str:
+        """Retourne le nom complet du client."""
+        return self.__identite
+    
+    @identite.setter
+    def identite(self, valeur: str) -> None:
+        """Modifie le nom complet du client."""
+        if valeur.isdigit():
+            raise ValueError("L'identité ne peut pas contenir de chiffres.")
+        self.__identite = valeur
+    
+    @property
+    def preference_table(self) -> int:  
+        """Retourne le numéro de la table préférée du client."""
+        return self.__preference_table      
+    
+    
+    @preference_table.setter
+    def preference_table(self, valeur: int) -> None:
+        """Modifie le numéro de la table préférée du client."""
+        if valeur < 1:
+            raise ValueError("La préférence de table ne peut pas être inférieure à 1.")
+        elif valeur > 12:
+            raise ValueError("La préférence de table ne peut pas être supérieure à 12.")
+        
+        self.__preference_table = valeur
+    
+    
+    @property
+    def contact(self) -> str:
+        """Retourne le numéro de téléphone du client."""
+        return self.__contact
+        
+        
+    @contact.setter
+    def contact(self, valeur: str) -> None:
+        """Modifie le numéro de téléphone du client."""
+        if not isinstance(valeur, str):
+            raise TypeError("Le contact doit être une chaîne de caractères.")
+        if not valeur.isdigit() or len(valeur) != 10:
+            raise ValueError("Le numéro de téléphone doit contenir exactement 10 chiffres.")
+        if not valeur.startswith("04"):
+            raise ValueError("Le numéro de téléphone belge doit commencer par '04'.")
+        self.__contact = valeur
+             
+    def __str__(self):
+        return f"Client(identite={self.__identite}, preference_table={self.__preference_table}, contact={self.__contact})"
+    
+    def __repr__(self):
+        return f"Client(identite='{self.__identite}', preference_table='{self.__preference_table}', contact='{self.__contact}')"
+    
 
-        Args:
-            restaurant: L'instance du restaurant où le client souhaite réserver.
-            date: La date de la réservation (format: "YYYY-MM-DD").
-            heure: L'heure de la réservation (format: "HH:MM").
-            nombre_personnes: Le nombre de personnes pour la réservation.
-
-        Returns:
-            bool: True si la réservation a été effectuée avec succès, False sinon.
-        """
-        return False  # À implémenter
+    if __name__ == "__main__": 
+        client = Client("Jean Dupont", 5, "0478123456")
+        print(client)  

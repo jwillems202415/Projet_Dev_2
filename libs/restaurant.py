@@ -1,3 +1,8 @@
+from reservation import Reservation, Tables 
+from client import Client
+from table import Table
+from horaire import Horaire
+
 class Restaurant:
     """Classe représentant un restaurant et ses fonctionnalités de gestion.
 
@@ -12,12 +17,7 @@ class Restaurant:
             {"lundi": {"ouverture": "12:00", "fermeture": "14:30"}, ...}.
     """
 
-    def __init__(
-        self,
-        nom: str,
-        tables: list['Table'],  # Supposons que `tables` est une liste d'instances de la classe `Table`
-        horaires: dict,         # Structure flexible pour les horaires (à adapter selon tes besoins)
-    ) -> None:
+    def __init__( self, nom: str, tables: dict, horaires: dict) -> None:
         """Initialise une instance de Restaurant.
 
         Args:
@@ -25,10 +25,13 @@ class Restaurant:
             tables: Liste des tables disponibles dans le restaurant.
             horaires: Dictionnaire définissant les horaires d'ouverture.
         """
-        self.nom = nom
-        self.tables = tables
-        self.horaires = horaires
+        self.__nom = nom
+        self.__tables = tables
+        self.__horaires = horaires
 
+    
+    
+    
     def verifier_disponibilite(self, date: str, heure: str, nombre_personnes: int) -> bool:
         """Vérifie la disponibilité d'une table pour une réservation donnée.
 

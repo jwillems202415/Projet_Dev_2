@@ -8,7 +8,6 @@ class Table:
         nom (str): Le nom de la table (ex: "Table impressionniste").
         numero (int): Le numéro unique de la table dans le restaurant.
         capacite (int): Le nombre de places disponibles à cette table.
-        est_occupe (bool): Indique si la table est actuellement occupée (True) ou libre (False).
     """
 
     def __init__(
@@ -16,7 +15,7 @@ class Table:
         nom: str,
         numero: int,
         capacite: int,
-        est_occup: bool,
+        emplacement: str
     ) -> None:
         """Initialise une instance de Table.
 
@@ -24,23 +23,43 @@ class Table:
             nom: Le nom de la table.
             numero: Le numéro unique de la table.
             capacite: Le nombre de places disponibles.
-            est_occup: L'état d'occupation initial de la table.
         """
-        self.nom = nom                  # str
-        self.numero = numero            # int
-        self.capacite = capacite        # int
-        self.est_occupe = est_occup    # bool
-
-    def reserver(self) -> None:
-        """Marque la table comme occupée.
-
-        Met à jour l'attribut `est_occupe` à True pour indiquer que la table est réservée.
-        """
-        self.est_occupe = True
-
-    def liberer(self) -> None:
-        """Marque la table comme libre.
-
-        Met à jour l'attribut `est_occupe` à False pour indiquer que la table est disponible.
-        """
-        self.est_occupe = False
+        self.__nom = nom                  # str
+        self.__numero = numero            # int
+        self.__capacite = capacite        # int
+        self.__emplacement = emplacement  # str
+        
+    @property
+    def nom(self) -> str:
+        """Retourne le nom de la table."""
+        return self.__nom
+    
+    @property
+    def numero(self) -> int:
+        """Retourne le numéro de la table."""
+        return self.__numero
+    
+    
+    @property
+    def capacite(self) -> int:
+        """Retourne la capacité de la table."""
+        return self.__capacite
+    
+    @property
+    def emplacement(self) -> str:
+        """Retourne l'emplacement de la table."""
+        return self.__emplacement
+    
+    def __str__(self):
+        pass
+    
+    
+    def __repr__(self):
+        pass
+    
+    if __name__ == "__main__": 
+        table = Table("Table impressionniste", 1, 4)
+        print(table)
+        print(table.nom)
+        print(table.numero)
+        print(table.capacite)
