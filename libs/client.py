@@ -36,8 +36,8 @@ class Client:
     @identite.setter
     def identite(self, valeur: str) -> None:
         """Modifie le nom complet du client."""
-        if valeur.isdigit():
-            raise ValueError("L'identité ne peut pas contenir de chiffres.")
+        if any(char.isdigit() for char in valeur):
+            raise ValueError("L'identité ne doit pas contenir de chiffres.")
         self.__identite = valeur
     
     @property
@@ -74,11 +74,11 @@ class Client:
             raise ValueError("Le numéro de téléphone belge doit commencer par '04'.")
         self.__contact = valeur
              
-    def __str__(self):
-        return f"Client(identite={self.__identite}, preference_table={self.__preference_table}, contact={self.__contact})"
+    def __str__(self) -> str:
+        return f"Client {self.__identite} (Préférence Table: {self.__preference_table}, Contact: {self.__contact})"
     
-    def __repr__(self):
-        return f"Client(identite='{self.__identite}', preference_table='{self.__preference_table}', contact='{self.__contact}')"
+    def __repr__(self) -> str:
+        return f"Client('{self.__identite}', {self.__preference_table}, '{self.__contact}')"
     
 
     if __name__ == "__main__": 

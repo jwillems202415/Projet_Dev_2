@@ -50,12 +50,12 @@ class Table:
         """Retourne l'emplacement de la table."""
         return self.__emplacement
     
-    def __str__(self):
-        pass
+    def __str__(self) -> str:
+        return f"Table {self.__nom} (Numéro: {self.__numero}, Capacité: {self.__capacite}, Emplacement: {self.__emplacement})"
     
     
-    def __repr__(self):
-        pass
+    def __repr__(self) -> str:
+        return f"Table('{self.__nom}', {self.__numero}, {self.__capacite}, '{self.__emplacement}')"
     
     if __name__ == "__main__": 
         table = Table("Table impressionniste", 1, 4)
