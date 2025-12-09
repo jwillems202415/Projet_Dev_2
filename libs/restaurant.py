@@ -48,7 +48,7 @@ class Restaurant:
         """Ajout d'une réservation."""
 
         # Récolte des informations.
-        identite_client = input("Entrer le NOM et le Prénom du client :\nadd> ")
+        identite_client = input("Entrer le nom et le prénom du client :\nadd> ")
         print(identite_client)
 
         identite_employe = input("Entrer le nom de l'employé :\nadd> ")

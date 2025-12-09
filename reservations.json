@@ -1,0 +1,18 @@
+[
+    {
+        "identite_client": "Chevillard Bastien",
+        "identite_employe": "Camille",
+        "num_table": "5",
+        "nombre_personnes": "6",
+        "horodatage": "15 d\u00e9cembre \u00e0 19:00",
+        "type_reservation": "Anniversaire",
+        "contraintes_alimentaires": [
+            "concombre",
+            "tomate",
+            "banane",
+            "couscous"
+        ],
+        "nombre_enfants": "2",
+        "commentaire": "C'est l'anniversaire du plus jeune des deux enfants qui seront pr\u00e9sents."
+    }
+]
