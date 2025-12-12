@@ -12,6 +12,21 @@
         "heure_fin": "",
         "type_reservation": "",
         "commentaire": "",
-        "date_creation": "2025-12-08 23:20"
+        "date_creation": "2025-12-12 13:21"
+    },
+    {
+        "identite_client": "Chevillard Bastien",
+        "identite_employe": "Camille",
+        "num_table": 4,
+        "nombre_personnes": 6,
+        "nombre_enfants": 2,
+        "contraintes_alimentaires": "Concombre",
+        "date_reservation": "2025-67-09",
+        "service": "soir",
+        "heure_debut": "17:00",
+        "heure_fin": "19:00",
+        "type_reservation": "Anniversaire",
+        "commentaire": "Rien",
+        "date_creation": "2025-12-12 13:24"
     }
 ]
