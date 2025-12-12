@@ -1,80 +1,97 @@
-from libs.reservation import Reservation
-from libs.restaurant import Restaurant
-import json
+import sys
+from pathlib import Path
 
-# SAUVEGARDE DES DONNÉES -------------------------------------------------------
+# Ajouter le dossier libs au path pour que Python trouve les modules
+sys.path.insert(0, str(Path(__file__).parent / "libs"))
 
-RESERVATIONS_FILE = "reservations.json"
+# Imports des classes depuis libs (sans préfixe 'libs.')
+from client import Client
+from reservation import Reservation
+from restaurant import Restaurant
 
-def load_reservations():
-    """Load reservations from the JSON file."""
-    try:
-        with open(RESERVATIONS_FILE, "r") as file:
-            data = json.load(file)
-            return [Reservation(**item) for item in data]
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
-
-def save_reservations(reservations):
-    """Save reservations to the JSON file."""
-    with open(RESERVATIONS_FILE, "w") as file:
-        json.dump([reservation.__dict__ for reservation in reservations], file, indent=4)
-
-# ------------------------------------------------------------------------------
-
-def action_help():
-    """Affiche l'aide des commandes disponibles."""
-    print("Commandes disponibles :")
-    print("  add    - Ajouter une réservation")
-    print("  delete - Supprimer une réservation")
-    print("  detail - Afficher le détail d'une réservation")
-    print("  list   - Lister les réservations")
-    print("  help   - Afficher cette aide")
-    print("  exit   - Quitter le programme")
+def menu():
+    print("\n=== La Bonne Fourchette - CLI ===")
+    print("1. Afficher les tables")
+    print("2. Ajouter un client")
+    print("3. Afficher les clients")
+    print("4. Ajouter une réservation")
+    print("5. Supprimer une réservation")
+    print("6. Voir toutes les réservations")
+    print("7. Quitter")
+    return input("Votre choix: ")
 
 def main():
-    print(r"""
-    _            ____
-    | |    __ _  | __ )  ___  _ __  _ __   ___
-    | |   / _` | |  _ \ / _ \| '_ \| '_ \ / _ \
-    | |__| (_| | | |_) | (_) | | | | | | |  __/
-    |_____\__,_| |____/ \___/|_| |_|_| |_|\___|
-    |  ___|__  _   _ _ __ ___| |__   ___| |_| |_ ___
-    | |_ / _ \| | | | '__/ __| '_ \ / _ \ __| __/ _ \
-    |  _| (_) | |_| | | | (__| | | |  __/ |_| ||  __/
-    |_|  \___/ \__,_|_|  \___|_| |_|\___|\__|\__\___|
-    version 0.2
-    """)
-
-    print("Bienvenue dans le système de gestion des réservations !")
-    print("Tapez 'help' pour voir les commandes disponibles.")
+    resto = Restaurant()  # Initialise le restaurant
 
     global reservations
     reservations = load_reservations()
 
     while True:
-        # Demande à l'utilisateur de saisir une commande
-        user_input = input("\n> ").strip().lower()
+        choix = menu()
 
-        # Exécute l'action correspondante
-        if user_input == "add":
-            print("Action 'add' : Ajout d'une réservation...")
-            Restaurant.ajouter_reservation(reservations)
-        elif user_input == "delete":
-            action_delete()
-        elif user_input == "list":
-            print("Action 'list' : Liste des réservations...")
-            Restaurant.lister_reservations(reservations)
-        elif user_input == "help":
-            action_help()
-        elif user_input == "exit":
-            print("⏳ Enregistrement des réservations…")
-            save_reservations(reservations)
-            print("✅ Enregistrement terminé !")
+        if choix == "1":
+            resto.afficher_tables()
+
+        elif choix == "2":
+            nom = input("Nom complet: ")
+            table_pref = int(input("Table préférée (1-12): "))
+            contact = input("Numéro de téléphone: ")
+            client = Client(nom, table_pref, contact)
+            resto.ajouter_client(client)
+            print(f"Client {nom} ajouté.")
+
+        elif choix == "3":
+            resto.afficher_clients()
+
+        elif choix == "4":
+            identite_client = input("Nom du client: ")
+            identite_employe = input("Nom de l'employé: ")
+            num_table = int(input("Numéro de table: "))
+            nombre_personnes = int(input("Nombre de personnes: "))
+            nombre_enfants = int(input("Nombre d'enfants: "))
+            contraintes = input("Contraintes alimentaires: ")
+            date_res = input("Date (YYYY-MM-DD): ")
+            service = input("Service (midi/soir): ")
+            heure_debut = input("Heure début (HH:MM): ")
+            heure_fin = input("Heure fin (HH:MM): ")
+            type_res = input("Type de réservation: ")
+            commentaire = input("Commentaire: ")
+
+            reservation = Reservation(
+                identite_client,
+                identite_employe,
+                num_table,
+                nombre_personnes,
+                nombre_enfants,
+                contraintes,
+                date_res,
+                service,
+                heure_debut,
+                heure_fin,
+                type_res,
+                commentaire
+            )
+            resto.ajouter_reservation(reservation)
+            print("Réservation ajoutée.")
+
+        elif choix == "5":
+            nom_client = input("Nom du client à supprimer: ")
+            res_a_supprimer = next((r for r in resto.reservations if r.identite_client == nom_client), None)
+            if res_a_supprimer:
+                resto.supprimer_reservation(res_a_supprimer)
+            else:
+                print("Aucune réservation trouvée pour ce client.")
+
+        elif choix == "6":
+            for desc in resto.voir_reservations():
+                print(desc)
+
+        elif choix == "7":
             print("Au revoir !")
             break
+
         else:
-            print(f"Commande inconnue : '{user_input}'. Tapez 'help' pour voir les commandes disponibles.")
+            print("Choix invalide.")
 
 if __name__ == "__main__":
     main()
