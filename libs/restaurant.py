@@ -1,7 +1,7 @@
 import json
-from client import Client
-from reservation import Reservation
-from table import Table
+from .client import Client
+from .reservation import Reservation
+from .table import Table
 
 class Restaurant:
     """Classe représentant le restaurant 'La Bonne Fourchette' avec son chef Gaston."""
@@ -35,6 +35,7 @@ class Restaurant:
                     )
                     self.reservations.append(reservation)
         except (FileNotFoundError, json.JSONDecodeError):
+            print("❗ Le fichier « reservations.json » est inexistant.")
             self.reservations = []
 
     # Méthodes fixes
@@ -51,7 +52,7 @@ class Restaurant:
     # Ajouter une réservation
     def ajouter_reservation(self, reservation: Reservation) -> None:
         self.reservations.append(reservation)
-        self._sauvegarder_reservations()
+        # self._sauvegarder_reservations() # fonctionne pas pour le moment et clc
 
     # Supprimer une réservation
     def supprimer_reservation(self, reservation: Reservation) -> None:
@@ -108,6 +109,8 @@ class Restaurant:
     
     def __repr__(self):
         return f"Restaurant('{self._nom}', '{self._chef}')"
+
+
 
 if __name__ == "__main__":
     resto = Restaurant()

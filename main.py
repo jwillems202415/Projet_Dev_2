@@ -1,97 +1,74 @@
+from datetime import datetime, timedelta, time
 import sys
 from pathlib import Path
+import json
+import os
+import platform
+import re
+from actions import *
 
 # Ajouter le dossier libs au path pour que Python trouve les modules
-sys.path.insert(0, str(Path(__file__).parent / "libs"))
+# sys.path.insert(0, str(Path(__file__).parent / "libs")) # Nécessaire lors de l'utilisation d'un venv ?
 
 # Imports des classes depuis libs (sans préfixe 'libs.')
-from client import Client
-from reservation import Reservation
-from restaurant import Restaurant
+from libs.client import Client
+from libs.reservation import Reservation
+from libs.restaurant import Restaurant
 
-def menu():
-    print("\n=== La Bonne Fourchette - CLI ===")
-    print("1. Afficher les tables")
-    print("2. Ajouter un client")
-    print("3. Afficher les clients")
-    print("4. Ajouter une réservation")
-    print("5. Supprimer une réservation")
-    print("6. Voir toutes les réservations")
-    print("7. Quitter")
-    return input("Votre choix: ")
+def clear_terminal():
+    """Nettoie le terminal de manière portable."""
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:  # Linux/macOS
+        os.system("clear")
 
+# reservations_data_file = "reservations.json" Cassé pour le moment
+
+# ------------------------------------------------------------------------------
+# PROGRAMME
 def main():
-    resto = Restaurant()  # Initialise le restaurant
+    clear_terminal()
+    print(r"""
+        _            ____
+        | |    __ _  | __ )  ___  _ __  _ __   ___
+        | |   / _` | |  _ \ / _ \| '_ \| '_ \ / _ \
+        | |__| (_| | | |_) | (_) | | | | | | |  __/
+        |_____\__,_| |____/ \___/|_| |_|_| |_|\___|
+        |  ___|__  _   _ _ __ ___| |__   ___| |_| |_ ___
+        | |_ / _ \| | | | '__/ __| '_ \ / _ \ __| __/ _ \
+        |  _| (_) | |_| | | | (__| | | |  __/ |_| ||  __/
+        |_|  \___/ \__,_|_|  \___|_| |_|\___|\__|\__\___|
+        version 0.3
+        """)
+    print(f"Bienvenue dans le gestionnaire des réservations.\nTapez « help » pour obtenir la liste des commandes disponibles.")
+    bonne_fourchette = Restaurant() # Initialisation du restaurant
+
+    command_handlers = { # « Gestionnaire » des commandes
+        "help": action_help,
+        "add": lambda: action_add(bonne_fourchette),
+        "list": lambda: action_list(bonne_fourchette),
+        "delete": action_del,
+        "exit": action_exit,
+    }
 
     global reservations
-    reservations = load_reservations()
+    # Charger les données enregistrées.
+
+    try:
+        with open(reservations_data_file, "r", encoding="utf-8") as f:
+            reservations = json.load(f)
+        print("✅ Données chargées depuis reservation.json")
+    except:
+        print("❗ Attention : Aucun fichier « reservations.json » trouvé. Un nouveau fichier sera alors créé. Interrompez immédiatement l'application pour annuler.\n")
+        reservations = {}
 
     while True:
-        choix = menu()
-
-        if choix == "1":
-            resto.afficher_tables()
-
-        elif choix == "2":
-            nom = input("Nom complet: ")
-            table_pref = int(input("Table préférée (1-12): "))
-            contact = input("Numéro de téléphone: ")
-            client = Client(nom, table_pref, contact)
-            resto.ajouter_client(client)
-            print(f"Client {nom} ajouté.")
-
-        elif choix == "3":
-            resto.afficher_clients()
-
-        elif choix == "4":
-            identite_client = input("Nom du client: ")
-            identite_employe = input("Nom de l'employé: ")
-            num_table = int(input("Numéro de table: "))
-            nombre_personnes = int(input("Nombre de personnes: "))
-            nombre_enfants = int(input("Nombre d'enfants: "))
-            contraintes = input("Contraintes alimentaires: ")
-            date_res = input("Date (YYYY-MM-DD): ")
-            service = input("Service (midi/soir): ")
-            heure_debut = input("Heure début (HH:MM): ")
-            heure_fin = input("Heure fin (HH:MM): ")
-            type_res = input("Type de réservation: ")
-            commentaire = input("Commentaire: ")
-
-            reservation = Reservation(
-                identite_client,
-                identite_employe,
-                num_table,
-                nombre_personnes,
-                nombre_enfants,
-                contraintes,
-                date_res,
-                service,
-                heure_debut,
-                heure_fin,
-                type_res,
-                commentaire
-            )
-            resto.ajouter_reservation(reservation)
-            print("Réservation ajoutée.")
-
-        elif choix == "5":
-            nom_client = input("Nom du client à supprimer: ")
-            res_a_supprimer = next((r for r in resto.reservations if r.identite_client == nom_client), None)
-            if res_a_supprimer:
-                resto.supprimer_reservation(res_a_supprimer)
-            else:
-                print("Aucune réservation trouvée pour ce client.")
-
-        elif choix == "6":
-            for desc in resto.voir_reservations():
-                print(desc)
-
-        elif choix == "7":
-            print("Au revoir !")
-            break
-
+        shell_input = input("> ")
+        if shell_input in command_handlers:
+            command_handlers[shell_input]()
         else:
-            print("Choix invalide.")
+            print(f"Commande inconnue : '{shell_input}'. Tapez 'help' pour obtenir la liste des commandes.")
+
 
 if __name__ == "__main__":
     main()

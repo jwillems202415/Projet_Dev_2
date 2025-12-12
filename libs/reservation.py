@@ -1,6 +1,6 @@
 from datetime import datetime
-from table import Table
-from horaire import Horaire
+from .table import Table
+from .horaire import Horaire
 
 class Reservation:
     """Classe représentant une réservation dans un restaurant. 
@@ -57,7 +57,7 @@ class Reservation:
         type_reservation: str, 
         commentaire: str    
     ):
-           
+
         self.__identite_client = identite_client                  #str
         self.__identite_employe = identite_employe                #str
         self.__num_table = num_table                              #int
@@ -73,7 +73,7 @@ class Reservation:
         self.__heure_fin = heure_fin                              #str
         
         
-    @property    
+    @property
     def identite_client(self) -> str:
         """Retourne l'identité du client."""
         return self.__identite_client

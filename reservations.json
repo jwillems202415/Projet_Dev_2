@@ -1,32 +1,13 @@
 [
     {
-        "identite_client": "jeremie Nsenda",
-        "identite_employe": "bob",
-        "num_table": 7,
+        "identite_client": "Bastien",
+        "identite_employe": "Gaston",
+        "num_table": 6,
         "nombre_personnes": 2,
-        "nombre_enfants": 1,
-        "contraintes_alimentaires": "",
-        "date_reservation": "",
-        "service": "",
-        "heure_debut": "",
-        "heure_fin": "",
-        "type_reservation": "",
-        "commentaire": "",
-        "date_creation": "2025-12-12 13:21"
-    },
-    {
-        "identite_client": "Chevillard Bastien",
-        "identite_employe": "Camille",
-        "num_table": 4,
-        "nombre_personnes": 6,
-        "nombre_enfants": 2,
-        "contraintes_alimentaires": "Concombre",
-        "date_reservation": "2025-67-09",
+        "nombre_enfants": 0,
+        "contraintes_alimentaires": [
+            "conn"
+        ],
+        "date_reservation": "2025-12-12",
         "service": "soir",
-        "heure_debut": "17:00",
-        "heure_fin": "19:00",
-        "type_reservation": "Anniversaire",
-        "commentaire": "Rien",
-        "date_creation": "2025-12-12 13:24"
-    }
-]
+        "heure_debut": 
