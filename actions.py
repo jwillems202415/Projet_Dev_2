@@ -9,6 +9,7 @@ def action_help():
         "add     - Encoder une réservation\n"
         "list    - Lister les réservations\n"
         "detail  - Afficher le détail d'une réservation\n"
+        "modif   - Modifier une réservation\n"
         "del     - Supprimer une réservation\n"
         "exit    - Quitter l'application\n"
     )
@@ -266,6 +267,87 @@ def action_detail(restaurant):
                 break
             else:
                 print("❗ Veuillez répondre par 'oui' ou 'non'.")
+
+
+def action_modif(restaurant):
+    if not restaurant.reservations:
+        print("Aucune réservation à modifier.\n")
+        return
+
+    # Afficher la liste des réservations
+    print("\n--- LISTE DES RÉSERVATIONS ---")
+    for i, res in enumerate(restaurant.reservations, start=1):
+        print(f"{i}. {res.identite_client} | {res.date_reservation} {res.heure_debut}")
+    print("------------------------------\n")
+
+    # Choix de la réservation
+    while True:
+        try:
+            choix = int(input("Numéro de la réservation à modifier : "))
+            if 1 <= choix <= len(restaurant.reservations):
+                reservation = restaurant.reservations[choix - 1]
+                break
+            else:
+                print("❗ Sélection invalide. Veuillez réessayer.")
+        except ValueError:
+            print("❗ Veuillez entrer un nombre valide.")
+
+    # Menu des champs modifiables
+    print(
+        "Que souhaitez-vous modifier ?\n"
+        "1. Date / heure\n"
+        "2. Nombre de convives\n"
+        "3. Nombre d'enfants\n"
+        "4. Table\n"
+        "5. Type de réservation\n"
+        "6. Commentaire"
+    )
+
+    champ = input("add> ").strip()
+
+    # Modifier en fonction du choix
+    if champ == "1":
+        nouvelle_date = input("Nouvelle date (YYYY-MM-DD) : ").strip()
+        nouvelle_heure = input("Nouvelle heure (HH:MM) : ").strip()
+        try:
+            reservation.date_reservation = nouvelle_date
+            reservation.heure_debut = nouvelle_heure
+        except Exception:
+            print("❗ Format de date/heure invalide, modification annulée.")
+            return
+    elif champ == "2":
+        while True:
+            valeur = input("Nouveau nombre de convives : ").strip()
+            if valeur.isdigit():
+                reservation.nombre_personnes = int(valeur)
+                break
+            else:
+                print("❗ Veuillez entrer un chiffre.")
+    elif champ == "3":
+        while True:
+            valeur = input("Nouveau nombre d'enfants : ").strip()
+            if valeur.isdigit():
+                reservation.nombre_enfants = int(valeur)
+                break
+            else:
+                print("❗ Veuillez entrer un chiffre.")
+    elif champ == "4":
+        while True:
+            valeur = input("Nouvelle table : ").strip()
+            if valeur.isdigit():
+                reservation.num_table = int(valeur)
+                break
+            else:
+                print("❗ Veuillez entrer un chiffre.")
+    elif champ == "5":
+        reservation.type_reservation = input("Nouveau type de réservation : ").strip()
+    elif champ == "6":
+        reservation.commentaire = input("Nouveau commentaire : ").strip()
+    else:
+        print("❗ Choix invalide, modification annulée.")
+        return
+
+    print("✔️ Réservation mise à jour avec succès.\n")
 
 
 def action_del(restaurant):
