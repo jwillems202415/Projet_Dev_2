@@ -47,7 +47,8 @@ def main():
         "help": action_help,
         "add": lambda: action_add(bonne_fourchette),
         "list": lambda: action_list(bonne_fourchette),
-        "delete": action_del,
+        "detail": lambda: action_detail(bonne_fourchette),
+        "del": lambda: action_del(bonne_fourchette),
         "exit": action_exit,
     }
 

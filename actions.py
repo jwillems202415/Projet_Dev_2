@@ -6,12 +6,13 @@ from libs.reservation import Reservation
 
 def action_help():
     print(
-        "add  - Encoder une réservation\n"
-        "list - Lister les réservations du jour\n"
-        "del  - Supprimer une réservation\n"
-        "plus - Autres commandes\n"
-        "exit - Quitter l'application\n"
+        "add     - Encoder une réservation\n"
+        "list    - Lister les réservations\n"
+        "detail  - Afficher le détail d'une réservation\n"
+        "del     - Supprimer une réservation\n"
+        "exit    - Quitter l'application\n"
     )
+
 
 def action_add(restaurant):
     # Horodatage ---------------------------------------------------------------
@@ -30,6 +31,22 @@ def action_add(restaurant):
 
     print(f"✔️ Horodatage : {date_res.strftime("%Y-%m-%d %H:%M")}\n")
 
+    # Identité client ----------------------------------------------------------
+    while True:
+        print("Nom et prénom du client :")
+        id_client = input("add> ")
+        if not id_client:
+            print("❗ Ce champ est obligatoire et ne peut pas être vide.\n")
+        elif len(id_client) == 1:
+            print("❗ Ce champ ne peut pas contenir qu'un seul caractère.\n")
+        elif not re.fullmatch(r"^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$", id_client): #🐱
+            print("❗ Ce champ ne peut contenir que des lettres, tirets, apostrophes ou espaces.\n")
+        else:
+            break
+    print(f"✔️ Identité du client : {id_client}\n")
+    # 💡 Rajouter ici un truc qui récupère les clients, regarde s'il existe déjà et offre de l'enregistrer ou non.
+
+    
     # Nombre de convives -------------------------------------------------------
     while True:
         print("Nombre de convives : (laisser blanc pour « 2 »)")
@@ -43,23 +60,37 @@ def action_add(restaurant):
             print("❗ Format invalide. Veuillez entrer un nombre.\n")
 
     print(f"✔️ Nombre de convives : {nbr_conv}\n")
-
-    # Identité client ----------------------------------------------------------
+    
+    # Nombre d'enfants ------------------------------------------------------------
+    nbr_enfants = 0
     while True:
-        print("Nom et prénom du client :")
-        id_client = input("add> ")
-        if not id_client:
-            print("❗ Ce champ est obligatoire et ne peut pas être vide.\n")
-        elif len(id_client) == 1:
-            print("❗ Ce champ ne peut pas contenir qu'un seul caractère.\n")
-        elif not re.fullmatch(r"^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$", id_client): #🐱
-            print("❗ Ce champ ne peut contenir que des lettres, tirets, apostrophes ou espaces.\n")
-        else:
+        print("Nombre d'enfants : (laisser blanc pour 0)")
+        try:
+            nbr_enfants_input = input("add> ")
+            if not nbr_enfants_input:
+                nbr_enfants = 0
+            else:
+                nbr_enfants = int(nbr_enfants_input)
             break
+        except ValueError:
+            print("❗ Format invalide. Veuillez entrer un nombre.\n")
 
-    print(f"✔️ Identité du client : {id_client}\n")
-    # 💡 Rajouter ici un truc qui récupère les clients, regarde s'il existe déjà et offre de l'enregistrer ou non.
+    print(f"✔️ Nombre d'enfants : {nbr_enfants}\n")
 
+    # Chaise haute ---------------------------------------------------------------
+    chaise_haute = "Non"
+    if nbr_enfants > 0:
+        while True:
+            print("Faut-il prévoir une chaise haute ? (oui / non) :")
+            rep = input("add> ").lower()
+            if rep in ["oui", "non"]:
+                chaise_haute = rep.capitalize()
+                break
+            else:
+                print("❗ Répondez par 'oui' ou 'non'.\n")
+
+    print(f"✔️ Chaise haute : {chaise_haute}\n")
+    
     print(f"ℹ️ Si la réservation se fait par téléphone, vous pouvez raccrocher à partir de ce point. Les questions suivantes demanderont des informations complémentaires et spécifiques que le client aurait de toute façon précisées auparavant, dès lors sa présence n'est plus requise.\n")
 
     # Contraintes alimentaires -------------------------------------------------
@@ -78,36 +109,6 @@ def action_add(restaurant):
             contr_alim.append(in_alim)
     
     print(f"✔️ Contraintes alimentaires : {contr_alim} :\n")
-
-    # Nombre chaises hautes ----------------------------------------------------
-    while True:
-        print("Nombre de chaises hautes requises pour des enfants : (laisser blanc pour 0)")
-        try:
-            nbr_chaises_h = input("add> ")
-            if not nbr_chaises_h:
-                nbr_chaises_h = 0
-            nbr_chaises_h = int(nbr_chaises_h)
-            break
-        except ValueError:
-            print("❗ Format invalide. Veuillez entrer un nombre.\n")
-
-    print(f"✔️ Nombre de chaises hautes requises : {nbr_chaises_h}\n")
-
-    # Identité de l'employé ----------------------------------------------------
-    while True:
-        print("Prénom de l'employé enregistrant cette réservation : (laisser blanc pour « Gaston »)")
-        id_empl = input("add> ")
-        if not id_empl:
-            id_empl = "Gaston"
-            break
-        elif len(id_empl) == 1:
-            print("❗ Ce champ ne peut pas contenir qu'un seul caractère.\n")
-        elif not re.fullmatch(r"^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$", id_empl): #🐱
-            print("❗ Ce champ ne peut contenir que des lettres, tirets, apostrophes ou espaces.\n")
-        else:
-            break
-    # 💡 Ajouter un système qui vérifie que l'employé est bien dans la liste.
-    print(f"✔️ Prénom de l'employé enregistrant : {id_empl}\n")
 
     # Numéro de table assigné --------------------------------------------------
     while True:
@@ -140,8 +141,29 @@ def action_add(restaurant):
     print(f"✔️ Type de réservation : {type_reserv}\n")
 
     # Commentaire --------------------------------------------------------------
-    print("Commentaire éventuel : (laisser blanc si aucun)")
-    commentaire = input("add> ")
+    commentaire = ""
+    if chaise_haute == "Oui":
+        commentaire = "[Chaise haute requise] "
+    user_commentaire = input("Commentaire éventuel : (laisser blanc si aucun)\nadd> ")
+    commentaire += user_commentaire
+    print(f"✔️ Commentaire : {commentaire}\n")
+
+    # Identité de l'employé ----------------------------------------------------
+    while True:
+        print("Prénom de l'employé enregistrant cette réservation : (laisser blanc pour « Gaston »)")
+        id_empl = input("add> ")
+        if not id_empl:
+            id_empl = "Gaston"
+            break
+        elif len(id_empl) == 1:
+            print("❗ Ce champ ne peut pas contenir qu'un seul caractère.\n")
+        elif not re.fullmatch(r"^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$", id_empl): #🐱
+            print("❗ Ce champ ne peut contenir que des lettres, tirets, apostrophes ou espaces.\n")
+        else:
+            break
+    # 💡 Ajouter un système qui vérifie que l'employé est bien dans la liste.
+    print(f"✔️ Prénom de l'employé enregistrant : {id_empl}\n")
+
 
     # Autres données dispensables ----------------------------------------------
 
@@ -166,7 +188,7 @@ def action_add(restaurant):
         identite_employe = id_empl,
         num_table = num_table,
         nombre_personnes = nbr_conv,
-        nombre_enfants = nbr_chaises_h,
+        nombre_enfants = nbr_enfants,
         contraintes_alimentaires = contr_alim,
         date_reservation = date_res.date().strftime("%Y-%m-%d"),
         service = serv,
@@ -180,13 +202,114 @@ def action_add(restaurant):
     print("✅ Réservation ajoutée. Merci.\n")
 
 def action_list(restaurant):
-    restaurant.voir_reservations()
+    if not restaurant.reservations:
+        print("Aucune réservation enregistrée.\n")
+        return
+
+    print("\n--- LISTE DES RÉSERVATIONS ---")
+    for i, res in enumerate(restaurant.reservations, start=1):
+        print(
+            f"{i}. {res.identite_client} | "
+            f"{res.date_reservation} {res.heure_debut}"
+        )
+    print("------------------------------\n")
+
+
+def action_detail(restaurant):
+    """Afficher le détail d'une réservation et permettre d'enchaîner sur d'autres."""
+    if not restaurant.reservations:
+        print("Aucune réservation à afficher.\n")
+        return
+
+    afficher_autre = True
+    while afficher_autre:
+        print("\n--- LISTE DES RÉSERVATIONS ---")
+        for i, res in enumerate(restaurant.reservations, start=1):
+            print(f"{i}. {res.identite_client} | {res.date_reservation} {res.heure_debut}")
+        print("------------------------------\n")
+
+        while True:
+            try:
+                choix = int(input("Numéro de la réservation à afficher (0 pour annuler) : "))
+                if choix == 0:
+                    print("\nTapez 'help' pour voir les commandes disponibles.\n")
+                    return
+                if 1 <= choix <= len(restaurant.reservations):
+                    res = restaurant.reservations[choix - 1]
+                    break
+                else:
+                    print("❗ Veuillez entrer un numéro valide.\n")
+            except ValueError:
+                print("❗ Veuillez entrer un nombre.\n")
+
+       
+        print("\n======== DÉTAIL DE LA RÉSERVATION ========")
+        print(f"Nom et prénom du client : {res.identite_client}")
+        print(f"Date et heure           : {res.date_reservation} {res.heure_debut}")
+        print(f"Nombre de convives      : {res.nombre_personnes}")
+        print(f"Nombre d'enfants        : {res.nombre_enfants}")
+        print(f"Table souhaitée         : {res.num_table}")
+        print(f"Occasion particulière   : {res.type_reservation}")
+        print(f"Allergies / contraintes : {res.contraintes_alimentaires}")
+        print(f"Note du staff           : {res.commentaire}")
+        print(f"Réservation encodée par : {res.identite_employe}")
+        print("=========================================")
+
+        
+        while True:
+            rep = input("\nVoulez-vous afficher les détails d'une autre réservation ? (oui/non) : ").strip().lower()
+            if rep in ["oui", "o"]:
+                break
+            elif rep in ["non", "n"]:
+                afficher_autre = False
+                print("\nTapez 'help' pour voir les commandes disponibles.\n")
+                break
+            else:
+                print("❗ Veuillez répondre par 'oui' ou 'non'.")
+
 
 def action_del(restaurant):
-    restaurant.supprimer_reservation()
+    if not restaurant.reservations:
+        print("Aucune réservation à supprimer.\n")
+        return
+
+   
+    print("\n--- LISTE DES RÉSERVATIONS ---")
+    for i, res in enumerate(restaurant.reservations, start=1):
+        print(f"{i}. {res.identite_client} | {res.date_reservation} {res.heure_debut}")
+    print("------------------------------\n")
+
+   
+    while True:
+        try:
+            choix = int(input("Numéro de la réservation à supprimer (0 pour annuler) : "))
+            if choix == 0:
+                print("❌ Suppression annulée.\n")
+                return
+            if 1 <= choix <= len(restaurant.reservations):
+                res = restaurant.reservations[choix - 1]
+                break
+            else:
+                print("❗ Veuillez entrer un numéro valide.\n")
+        except ValueError:
+            print("❗ Veuillez entrer un nombre.\n")
+
+    while True:
+        confirm = input(f"Êtes-vous sûr de vouloir supprimer la réservation de {res.identite_client} ? (oui/non) : ").strip().lower()
+        if confirm in ["oui", "o"]:
+            restaurant.reservations.pop(choix - 1)
+            print(f"✅ Réservation de {res.identite_client} supprimée.\n")
+            break
+        elif confirm in ["non", "n"]:
+            print("❌ Suppression annulée.\n")
+            break
+        else:
+            print("❗ Veuillez répondre par 'oui' ou 'non'.")
+
 
 def action_plus():
     print("plus")
+    # il y a quoi a mettre en plus lol ??
 
 def action_exit():
     with open(reservations_data_file, "w", encoding="utf-8") as f:
