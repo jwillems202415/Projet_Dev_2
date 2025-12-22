@@ -12,6 +12,23 @@
         "heure_fin": "23:00",
         "type_reservation": "Normale",
         "commentaire": "",
-        "date_creation": "2025-12-22 12:06"
+        "date_creation": "2025-12-22 12:08"
+    },
+    {
+        "identite_client": "Chevillard Bastien",
+        "identite_employe": "Gaston",
+        "num_table": 5,
+        "nombre_personnes": 2,
+        "nombre_enfants": 0,
+        "contraintes_alimentaires": [
+            "tomate"
+        ],
+        "date_reservation": "2025-12-22",
+        "service": "soir",
+        "heure_debut": "20:00:00",
+        "heure_fin": "23:00",
+        "type_reservation": "Normale",
+        "commentaire": "",
+        "date_creation": "2025-12-22 12:09"
     }
 ]

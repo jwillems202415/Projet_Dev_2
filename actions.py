@@ -51,30 +51,41 @@ def action_add(restaurant):
     # Nombre de convives -------------------------------------------------------
     while True:
         print("Nombre de convives : (laisser blanc pour « 2 »)")
-        try:
-            nbr_conv = input("add> ")
-            if not nbr_conv:
-                nbr_conv = 2
-            nbr_conv = int(nbr_conv)
+        nbr_conv = input("add> ")
+
+        if not nbr_conv:
+            nbr_conv = 2
             break
+
+        try:
+            nbr_conv = int(nbr_conv)
+            if nbr_conv < 1:
+                print("❗ Cette valeur ne peut pas être inférieure à 1.\n")
+            else:
+                break
         except ValueError:
             print("❗ Format invalide. Veuillez entrer un nombre.\n")
 
     print(f"✔️ Nombre de convives : {nbr_conv}\n")
     
     # Nombre d'enfants ------------------------------------------------------------
-    nbr_enfants = 0
     while True:
         print("Nombre d'enfants : (laisser blanc pour 0)")
-        try:
-            nbr_enfants_input = input("add> ")
-            if not nbr_enfants_input:
-                nbr_enfants = 0
-            else:
-                nbr_enfants = int(nbr_enfants_input)
+        nbr_enfants = input("add> ")
+
+        if not nbr_enfants:
+            nbr_enfants = 0
             break
+
+        try:
+            nbr_enfants = int(nbr_enfants)
+            if nbr_enfants < 0:
+                print("❗ Cette valeur ne peut pas être négative.\n")
+            else:
+                break
         except ValueError:
             print("❗ Format invalide. Veuillez entrer un nombre.\n")
+
 
     print(f"✔️ Nombre d'enfants : {nbr_enfants}\n")
 
@@ -116,10 +127,15 @@ def action_add(restaurant):
         print("Numéro de table :")
         try:
             num_table = input("add> ")
-            if not num_table:
-                num_table = 0
             num_table = int(num_table)
-            break
+            if not num_table:
+                print("❗ Ce champ ne peut pas être vide.\n")
+            elif num_table == 0:
+                print("❗ Un numéro de table ne peut pas être nul.\n")
+            elif num_table > 12:
+                print("❗ Il n'y a que douze tables dans le restaurant, toute valeur supérieure à 12 est invalide.\n")
+            else:
+                break
         except ValueError:
             print("❗ Format invalide. Veuillez entrer un nombre.\n")
 
