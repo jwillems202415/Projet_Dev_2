@@ -1,5 +1,6 @@
 import json
 from .client import Client
+from datetime import datetime, timedelta, time
 from .reservation import Reservation
 from .table import Table
 
@@ -34,8 +35,9 @@ class Restaurant:
                         item["commentaire"]
                     )
                     self.reservations.append(reservation)
+                print(f"✅ {len(self.reservations)} réservations chargées depuis {self.fichier_reservations}.")
         except (FileNotFoundError, json.JSONDecodeError):
-            print("❗ Le fichier « reservations.json » est inexistant.")
+            print("❗ Le fichier « reservations.json » n'a pas été trouvé et sera donc créé une fois des données ajoutées.")
             self.reservations = []
 
     # Méthodes fixes
@@ -52,7 +54,7 @@ class Restaurant:
     # Ajouter une réservation
     def ajouter_reservation(self, reservation: Reservation) -> None:
         self.reservations.append(reservation)
-        # self._sauvegarder_reservations() # fonctionne pas pour le moment et clc
+        self._sauvegarder_reservations()
 
     # Supprimer une réservation
     def supprimer_reservation(self, reservation: Reservation) -> None:
@@ -80,8 +82,8 @@ class Restaurant:
                 "contraintes_alimentaires": res.contraintes_alimentaires,
                 "date_reservation": str(res.date_reservation),
                 "service": res.service,
-                "heure_debut": res.heure_debut,
-                "heure_fin": res.heure_fin,
+                "heure_debut": str(res.heure_debut),
+                "heure_fin": str(res.heure_fin),
                 "type_reservation": res.type_reservation,
                 "commentaire": res.commentaire,
                 "date_creation": res.date

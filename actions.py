@@ -1,8 +1,8 @@
 # Dans ce fichier se trouvent toutes les fonctions actionnées lorsqu'une commande particulière est exécutée en console.
 
-from datetime import time, datetime
 import re
 from libs.reservation import Reservation
+from datetime import datetime, timedelta, time
 
 def action_help():
     print(
@@ -18,7 +18,7 @@ def action_help():
 def action_add(restaurant):
     # Horodatage ---------------------------------------------------------------
     while True:
-        print(f"Horodatage (YYYY-MM-DD HH:MM) (laisser blanc pour « {datetime.now().strftime("%Y-%m-%d %H:%M")} ») :")
+        print(f"Horodatage (YYYY-MM-DD HH:MM) (laisser blanc pour « {datetime.now().strftime("%Y-%m-%d")} 20:00 ») :")
         date_res_input = input("add> ")
         if not date_res_input:
             date_res = datetime.now().replace(hour=20, minute=0, second=0, microsecond=0)
@@ -29,7 +29,7 @@ def action_add(restaurant):
                 break
             except:
                 print("❗ Format invalide. Utilisez le format YYYY-MM-DD HH:MM.\n")
-
+    
     print(f"✔️ Horodatage : {date_res.strftime("%Y-%m-%d %H:%M")}\n")
 
     # Identité client ----------------------------------------------------------
@@ -243,7 +243,7 @@ def action_detail(restaurant):
             except ValueError:
                 print("❗ Veuillez entrer un nombre.\n")
 
-       
+
         print("\n======== DÉTAIL DE LA RÉSERVATION ========")
         print(f"Nom et prénom du client : {res.identite_client}")
         print(f"Date et heure           : {res.date_reservation} {res.heure_debut}")
@@ -394,6 +394,5 @@ def action_plus():
     # il y a quoi a mettre en plus lol ??
 
 def action_exit():
-    with open(reservations_data_file, "w", encoding="utf-8") as f:
-        json.dump(reservations, f, ensure_ascii=False, indent=4)
-    print("Données sauvegardées dans reservations.json.\n:) AU REVOIR")
+    print(":) AU REVOIR")
+    exit()

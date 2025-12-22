@@ -22,8 +22,6 @@ def clear_terminal():
     else:  # Linux/macOS
         os.system("clear")
 
-# reservations_data_file = "reservations.json" Cassé pour le moment
-
 # ------------------------------------------------------------------------------
 # PROGRAMME
 def main():
@@ -52,17 +50,6 @@ def main():
         "del": lambda: action_del(bonne_fourchette),
         "exit": action_exit,
     }
-
-    global reservations
-    # Charger les données enregistrées.
-
-    try:
-        with open(reservations_data_file, "r", encoding="utf-8") as f:
-            reservations = json.load(f)
-        print("✅ Données chargées depuis reservation.json")
-    except:
-        print("❗ Attention : Aucun fichier « reservations.json » trouvé. Un nouveau fichier sera alors créé. Interrompez immédiatement l'application pour annuler.\n")
-        reservations = {}
 
     while True:
         shell_input = input("> ")

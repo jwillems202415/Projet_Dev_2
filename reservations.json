@@ -1,13 +1,17 @@
 [
     {
-        "identite_client": "Bastien",
+        "identite_client": "dada",
         "identite_employe": "Gaston",
-        "num_table": 6,
+        "num_table": 0,
         "nombre_personnes": 2,
         "nombre_enfants": 0,
-        "contraintes_alimentaires": [
-            "conn"
-        ],
-        "date_reservation": "2025-12-12",
+        "contraintes_alimentaires": [],
+        "date_reservation": "2025-12-22",
         "service": "soir",
-        "heure_debut": 
+        "heure_debut": "20:00:00",
+        "heure_fin": "23:00",
+        "type_reservation": "Normale",
+        "commentaire": "",
+        "date_creation": "2025-12-22 12:06"
+    }
+]

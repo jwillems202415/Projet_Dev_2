@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, time, date
 from .table import Table
 from .horaire import Horaire
 
@@ -50,12 +50,12 @@ class Reservation:
         nombre_personnes: int,
         nombre_enfants: int,
         contraintes_alimentaires: str,
-        date_reservation: str,
+        date_reservation: date,
         service: str,
-        heure_debut: str,
-        heure_fin: str, 
-        type_reservation: str, 
-        commentaire: str    
+        heure_debut: time,
+        heure_fin: time,
+        type_reservation: str,
+        commentaire: str,
     ):
 
         self.__identite_client = identite_client                  #str
@@ -67,10 +67,10 @@ class Reservation:
         self.__nombre_enfants = nombre_enfants                    #int
         self.__commentaire = commentaire                          #str
         self.__date = datetime.now()                              #str
-        self.__date_reservation = date_reservation                #str
+        self.__date_reservation = date_reservation                #date
         self.__service = service                                  #str
-        self.__heure_debut = heure_debut                          #str
-        self.__heure_fin = heure_fin                              #str
+        self.__heure_debut = heure_debut                          #time
+        self.__heure_fin = heure_fin                              #time
         
         
     @property
@@ -256,11 +256,10 @@ class Reservation:
                 f"  Commentaire: {self.__commentaire}.\n"
                 f"  Réservé par l'employé: {self.__identite_employe}.\n"
                 f"  Date de création/modification: {self.date}.")
-                      
-                              
+
 
     def __del__(self) -> None:
-       pass
+        pass
     
     def __lt__(self, other) -> bool:
         pass
@@ -273,7 +272,7 @@ class Reservation:
     
     def __str__(self) -> str:
         return f"Réservation de {self.__identite_client} pour le {self.__date_reservation} à {self.__heure_debut} sur la table {self.__num_table}."
-           
+
     def __repr__(self) -> str:
         return f"Reservation('{self.__identite_client}', '{self.__identite_employe}', {self.__num_table}, {self.__nombre_personnes}, {self.__nombre_enfants}, '{self.__contraintes_alimentaires}', '{self.__date_reservation}', '{self.__service}', '{self.__heure_debut}', '{self.__heure_fin}', '{self.__type_reservation}', '{self.__commentaire}', '{self.__date.strftime('%Y-%m-%d %H:%M')}')"        
     

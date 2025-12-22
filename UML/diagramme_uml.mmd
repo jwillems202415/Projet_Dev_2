@@ -1,0 +1,61 @@
+classDiagram
+    %% ========== CLASSES ==========
+    class Restaurant {
+        -nom: str
+        -tables: int
+        -horaires: DateTime
+        +verifier_disponibilite()
+        +ajouter_client()
+        +ajouter_reservation()
+        +supprimer_reservation()
+        +voir_reservations()
+        -sauvegarder_reservations()
+        +afficher_tables()
+        +afficher_clients()
+        +afficher_reservations()
+    }
+
+    class Horaire {
+        -jour: str
+        -periode: str
+        -ouverture: Time
+        -fermeture: Time
+    }
+
+    class Client {
+        -identite_client: str
+        -preference_table: int
+        -num_telephone: int
+        +reserver()
+    }
+
+    class Table {
+        -numero: int
+        -nom: str
+        -capacite: int
+        -est_occupee: bool
+        +reserver()
+        +liberer()
+    }
+
+    class Reservation {
+        -identite_client: str
+        -identite_employe: str
+        -num_table: int
+        -nombre_personnes: int
+        -horaire: DateTime
+        -type_reservation: str
+        -contrainte_alimentaire: str
+        -nombre_enfants: int
+        -commentaire: str
+        +description()
+        +annuler()
+        +confirmer()
+    }
+
+    %% ========== RELATIONS ==========
+    Restaurant "1" -- "1..n" Horaire : "Le restaurant a des horaires"
+    Restaurant "1" *-- "12" Table : "Le restaurant contient des tables"
+    Client "1" -- "0..n" Reservation : "La réservation se fait pour le client"
+    Reservation "1..n" -- "1" Horaire : "La réservation utilise un horaire"
+    Reservation "1..n" -- "1..n" Table : "La réservation utilise des tables"
